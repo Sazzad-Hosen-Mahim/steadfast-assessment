@@ -112,7 +112,7 @@ export default function ProductDetailsContent() {
   };
 
   return (
-    <div className="mx-auto">
+    <div className="mx-auto px-4">
       <CommonWrapper>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10 mt-5">
           {/* Images */}
