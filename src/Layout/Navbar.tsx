@@ -3,9 +3,12 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { Badge } from "@/components/ui/badge";
+import { useAppSelector } from "@/hooks/useRedux";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const items = useAppSelector((state) => state.cart.items);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -49,7 +52,7 @@ const Navbar: React.FC = () => {
                   variant="destructive"
                   className="bg-red-500 rounded-full w-5 h-5 absolute top-4 left-5"
                 >
-                  1
+                  {items.length}
                 </Badge>
               </div>
               <Link

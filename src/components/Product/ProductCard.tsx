@@ -3,14 +3,30 @@ import React from "react";
 import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { addToCart } from "@/store/Slices/cartSlice";
+import { useAppDispatch } from "@/hooks/useRedux";
 
 interface ProductCardProps {
   product: Product;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const dispatch = useAppDispatch();
   const handleCart = () => {
-    toast("Product added to cart successfully!");
+    if (!product) return;
+    dispatch(
+      addToCart({
+        productId: product.id,
+        variationId: product.id, // or use a default variation id if available
+        name: product.name,
+        thumbnail: product.thumbnail,
+        price: Number(product.discount_price ?? product.regular_price),
+        quantity: 1, // default to 1
+        attributes: {}, // or provide default attributes if needed
+      })
+    );
+
+    toast.success("Product added to cart successfully!");
   };
   return (
     <div className="bg-white border lg:flex lg:flex-col justify-between gap-10 border-gray-100 rounded-lg p-3 shadow-sm hover:shadow-lg transition-shadow duration-300">
@@ -37,7 +53,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
       <div className="flex items-center gap-2 px-2">
         <Button
-          className="bg-red-500 text-white w-1/2 hover:bg-red-700"
+          className="bg-teal-600 hover:bg-teal-700 text-white w-1/2 "
           onClick={handleCart}
         >
           + Add To Cart

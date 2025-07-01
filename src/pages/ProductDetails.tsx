@@ -21,6 +21,7 @@ import SellerCard from "@/components/SellerCard/SellerCard";
 import { sampleSeller } from "@/lib/data/SellerCardData";
 import DetailsCard from "@/components/DetailsCard/DetailsCard";
 import CommonWrapper from "@/common/CommonWrapper";
+import { addToCart } from "@/store/Slices/cartSlice";
 
 export default function ProductDetailsContent() {
   const { slug } = useParams<{ slug: string }>();
@@ -70,13 +71,18 @@ export default function ProductDetailsContent() {
   }
 
   const handleAddToCart = () => {
-    console.log("Adding to cart:", {
-      productId: product.id,
-      variationId: selectedVariation?.id,
-      attributes: selectedAttributes,
-      quantity,
-      price: currentPrice.current,
-    });
+    if (!product || !selectedVariation) return;
+    dispatch(
+      addToCart({
+        productId: product.id,
+        variationId: selectedVariation.id,
+        name: product.name,
+        thumbnail: product.thumbnail,
+        price: currentPrice.current,
+        quantity,
+        attributes: selectedAttributes,
+      })
+    );
 
     toast.success("Product added to cart successfully!");
   };

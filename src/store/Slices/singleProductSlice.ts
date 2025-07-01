@@ -18,7 +18,7 @@ interface SelectedAttributes {
 interface ProductState {
   selectedImageIndex: number;
   selectedAttributes: SelectedAttributes;
-  selectedVariation: any | null;
+  selectedVariation: productDetails["variations"][number] | null;
   quantity: number;
   singleProduct: productDetails | null;
   loading: boolean;
@@ -61,11 +61,16 @@ const findMatchingVariation = (
 ) => {
   return (
     variations.find((variation) => {
-      return variation.variation_attributes.every((attr: any) => {
-        const attributeName = attr.attribute.name;
-        const attributeValue = attr.attribute_option.attribute_value;
-        return selectedAttributes[attributeName] === attributeValue;
-      });
+      return variation.variation_attributes.every(
+        (attr: {
+          attribute: { name: string };
+          attribute_option: { attribute_value: string };
+        }) => {
+          const attributeName = attr.attribute.name;
+          const attributeValue = attr.attribute_option.attribute_value;
+          return selectedAttributes[attributeName] === attributeValue;
+        }
+      );
     }) || null
   );
 };
@@ -165,19 +170,39 @@ const singleProductSlice = createSlice({
 
           // Set initial selected attributes based on first variation
           const initialAttributes: SelectedAttributes = {};
-          firstVariation.variation_attributes.forEach((attr: any) => {
-            initialAttributes[attr.attribute.name] =
-              attr.attribute_option.attribute_value;
-          });
+          firstVariation.variation_attributes.forEach(
+            (attr: {
+              attribute: { name: string };
+              attribute_option: { attribute_value: string };
+            }) => {
+              initialAttributes[attr.attribute.name] =
+                attr.attribute_option.attribute_value;
+            }
+          );
           state.selectedAttributes = initialAttributes;
         } else {
           // no variations, use product_detail as fallback
           state.selectedVariation = {
-            ...action.payload.product_detail,
+            id: action.payload.product_detail.id,
+            product_id: action.payload.id,
+            sku: "",
+            barcode: "",
+            purchase_price: "",
+            regular_price: action.payload.product_detail.regular_price,
+            discount_price: action.payload.product_detail.discount_price,
+            e_price: "",
+            e_discount_price: "",
+            wholesale_price: "",
+            minimum_qty: 0,
             total_stock_qty: action.payload.total_stock_qty,
+            status: 1,
             id_delivery_fee: action.payload.shop_product.id_delivery_fee,
             od_delivery_fee: action.payload.shop_product.od_delivery_fee,
             ed_delivery_fee: action.payload.shop_product.ed_delivery_fee,
+            created_at: "",
+            updated_at: "",
+            image: action.payload.thumbnail || "",
+            variation_attributes: [],
           };
         }
       })
@@ -212,15 +237,20 @@ export const selectUniqueAttributes = (state: {
   const attributeMap: Record<string, Set<string>> = {};
 
   state.singleProduct.singleProduct.variations.forEach((variation) => {
-    variation.variation_attributes.forEach((attr: any) => {
-      const attributeName = attr.attribute.name;
-      const attributeValue = attr.attribute_option.attribute_value;
+    variation.variation_attributes.forEach(
+      (attr: {
+        attribute: { name: string };
+        attribute_option: { attribute_value: string };
+      }) => {
+        const attributeName = attr.attribute.name;
+        const attributeValue = attr.attribute_option.attribute_value;
 
-      if (!attributeMap[attributeName]) {
-        attributeMap[attributeName] = new Set();
+        if (!attributeMap[attributeName]) {
+          attributeMap[attributeName] = new Set();
+        }
+        attributeMap[attributeName].add(attributeValue);
       }
-      attributeMap[attributeName].add(attributeValue);
-    });
+    );
   });
 
   const result: Record<string, string[]> = {};
