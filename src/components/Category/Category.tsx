@@ -5,7 +5,9 @@ import { useEffect, useRef, useState } from "react";
 
 const Category = () => {
   const dispatch = useAppDispatch();
-  const categories = useAppSelector((state) => state.category.categories);
+  const { categories, loading, error } = useAppSelector(
+    (state) => state.category
+  );
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLDivElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
@@ -28,6 +30,11 @@ const Category = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  if (loading) return <div>Loading categories...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!categories || categories.length === 0)
+    return <div>No categories found</div>;
 
   return (
     <div className="bg-white lg:h-[40px] pt-2 relative">
