@@ -41,7 +41,7 @@ export const fetchSingleProduct = createAsyncThunk(
   async (slug: string, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `http://157.230.240.97:9999/api/v1/product/${slug}`
+        `${import.meta.env.VITE_BASE_URL}/product/${slug}`
       );
 
       const data: singleProductDetails = response.data;

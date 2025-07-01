@@ -6,7 +6,7 @@ import axios from "axios";
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
   async (
-    url: string | undefined = "http://157.230.240.97:9999/api/v1/shop/products",
+    url: string | undefined = `${import.meta.env.VITE_BASE_URL}/shop/products`,
     thunkAPI
   ) => {
     try {
@@ -51,7 +51,7 @@ const productSlice = createSlice({
         // If this is the first page, replace; if next page, append
         if (
           action.meta.arg &&
-          action.meta.arg !== "http://157.230.240.97:9999/api/v1/shop/products"
+          action.meta.arg !== `${import.meta.env.BASE_URL}/shop/products`
         ) {
           state.products = [...state.products, ...action.payload.data];
         } else {
