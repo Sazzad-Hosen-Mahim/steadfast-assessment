@@ -44,17 +44,18 @@ const Category = () => {
               <h1>Categories</h1>
             </div>
             <div className="flex items-center lg:gap-4 lg:ml-4">
-              {(window.innerWidth < 768
-                ? categories.slice(0, 2)
-                : categories.slice(0, 3)
-              ).map((category) => (
-                <button
-                  className="text-teal-600 cursor-pointer text-xs lg:text-sm"
-                  key={category.id}
-                >
-                  {category.name}
-                </button>
-              ))}
+              {categories &&
+                (window.innerWidth < 768
+                  ? (categories || []).slice(0, 2)
+                  : (categories || []).slice(0, 3)
+                ).map((category) => (
+                  <button
+                    className="text-teal-600 cursor-pointer text-xs lg:text-sm"
+                    key={category.id}
+                  >
+                    {category.name}
+                  </button>
+                ))}
             </div>
           </div>
 

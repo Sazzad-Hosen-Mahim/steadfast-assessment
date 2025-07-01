@@ -120,14 +120,14 @@ export default function ProductDetailsContent() {
             <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
               <img
                 src={allImages[selectedImageIndex] || product.thumbnail}
-                alt={product.name}
+                alt={product?.name}
                 width={400}
                 height={400}
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="flex gap-2 overflow-x-auto">
-              {allImages.map((image, index) => (
+              {allImages?.map((image, index) => (
                 <button
                   key={index}
                   onClick={() => dispatch(setSelectedImage(index))}
@@ -153,20 +153,20 @@ export default function ProductDetailsContent() {
           <div className="space-y-6">
             <div>
               <h1 className="text-2xl font-semibold text-gray-900 mb-3">
-                {product.name}
+                {product?.name}
               </h1>
 
               <div className="flex items-center gap-2 mb-4">
                 <div className="flex items-center">
                   <span className="text-lg font-medium mr-1">
-                    {product.rating_avg || 0}
+                    {product?.rating_avg || 0}
                   </span>
                   <div className="flex">
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
                         className={`w-4 h-4 ${
-                          i < Math.floor(product.rating_avg || 0)
+                          i < Math.floor(product?.rating_avg || 0)
                             ? "fill-yellow-400 text-yellow-400"
                             : "text-gray-300"
                         }`}
@@ -174,7 +174,7 @@ export default function ProductDetailsContent() {
                     ))}
                   </div>
                   <span className="text-gray-600 ml-2">
-                    {product.rating_count || 0}
+                    {product?.rating_count || 0}
                   </span>
                 </div>
                 <div className="flex gap-2 ml-auto">
@@ -189,12 +189,12 @@ export default function ProductDetailsContent() {
 
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-3xl font-bold text-teal-600">
-                  ৳{currentPrice.current.toFixed(2)}
+                  ৳{currentPrice?.current.toFixed(2)}
                 </span>
                 {currentPrice.original > currentPrice.current && (
                   <>
                     <span className="text-lg text-gray-500 line-through">
-                      ৳{currentPrice.original.toFixed(2)}
+                      ৳{currentPrice?.original.toFixed(2)}
                     </span>
                     <Badge
                       variant="destructive"
@@ -219,7 +219,7 @@ export default function ProductDetailsContent() {
             </div>
 
             {/* Attributes */}
-            {product.is_variant &&
+            {product?.is_variant &&
               Object.entries(uniqueAttributes).map(
                 ([attributeName, values]) => (
                   <div key={attributeName}>
@@ -230,7 +230,7 @@ export default function ProductDetailsContent() {
                       </span>
                     </h3>
                     <div className="flex gap-2 flex-wrap">
-                      {values.map((value) => {
+                      {values?.map((value) => {
                         const isSelected =
                           selectedAttributes[attributeName] === value;
 
