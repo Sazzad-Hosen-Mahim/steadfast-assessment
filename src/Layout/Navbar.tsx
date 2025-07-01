@@ -12,7 +12,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-website-color-layout shadow-lg h-[80px]">
+    <nav className="bg-website-color-layout shadow-lg px-2 lg:px-0 lg:h-[80px]">
       <CommonWrapper>
         <div className=" mx-auto">
           <div className="flex items-center justify-between h-16">
@@ -26,7 +26,7 @@ const Navbar: React.FC = () => {
               </div>
             </div>
             {/* search bar  */}
-            <div className="lg:flex lg:items-center">
+            <div className="hidden lg:flex lg:items-center">
               <input
                 type="text"
                 className="lg:w-[763px] bg-white lg:h-[48px] lg:mt-[14px] rounded-l-md"
@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
             <div className="hidden md:flex space-x-4 items-center">
               <div className="relative">
                 <Link
-                  to="/"
+                  to="/cart"
                   className="text-white hover:bg-website-color-lightGray hover:text-black px-3 py-2 rounded-md text-sm font-medium"
                 >
                   <img src="/shopping-cart-01.png" alt="" />
@@ -71,7 +71,7 @@ const Navbar: React.FC = () => {
                   className="h-6 w-6"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke="currentColor"
+                  stroke="white"
                 >
                   {isOpen ? (
                     <path
