@@ -37,7 +37,7 @@ const ExpandableCard: React.FC<ExpandableCardProps> = ({
           </div>
         )}
 
-        {/* See More / See Less button */}
+        {/* See More and See Less button */}
         <button
           onClick={() => setIsExpanded(!isExpanded)}
           className="flex items-center mx-auto gap-1 text-gray-800 hover:text-gray-900 font-semibold text-sm transition-colors"

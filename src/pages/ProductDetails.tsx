@@ -22,6 +22,7 @@ import { sampleSeller } from "@/lib/data/SellerCardData";
 import DetailsCard from "@/components/DetailsCard/DetailsCard";
 import CommonWrapper from "@/common/CommonWrapper";
 import { addToCart } from "@/store/Slices/cartSlice";
+import { getFullImageUrl } from "@/utils/getFullImageUrl";
 
 export default function ProductDetailsContent() {
   const { slug } = useParams<{ slug: string }>();
@@ -77,7 +78,7 @@ export default function ProductDetailsContent() {
         productId: product.id,
         variationId: selectedVariation.id,
         name: product.name,
-        thumbnail: product.thumbnail,
+        thumbnail: getFullImageUrl(product.thumbnail),
         price: currentPrice.current,
         quantity,
         attributes: selectedAttributes,
@@ -119,7 +120,9 @@ export default function ProductDetailsContent() {
           <div className="space-y-4">
             <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
               <img
-                src={allImages[selectedImageIndex] || product.thumbnail}
+                src={getFullImageUrl(
+                  allImages[selectedImageIndex] || product.thumbnail
+                )}
                 alt={product?.name}
                 width={400}
                 height={400}
@@ -138,7 +141,7 @@ export default function ProductDetailsContent() {
                   }`}
                 >
                   <img
-                    src={image || "/placeholder.svg"}
+                    src={getFullImageUrl(image) || "/placeholder.svg"}
                     alt={`Product view ${index + 1}`}
                     width={64}
                     height={64}

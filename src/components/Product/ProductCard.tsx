@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { addToCart } from "@/store/Slices/cartSlice";
 import { useAppDispatch } from "@/hooks/useRedux";
+import { getFullImageUrl } from "@/utils/getFullImageUrl";
 
 interface ProductCardProps {
   product: Product;
@@ -12,17 +13,18 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const dispatch = useAppDispatch();
+  const thumbnailUrl = getFullImageUrl(product.thumbnail);
   const handleCart = () => {
     if (!product) return;
     dispatch(
       addToCart({
         productId: product.id,
-        variationId: product.id, // or use a default variation id if available
+        variationId: product.id,
         name: product.name,
         thumbnail: product.thumbnail,
         price: Number(product.discount_price ?? product.regular_price),
-        quantity: 1, // default to 1
-        attributes: {}, // or provide default attributes if needed
+        quantity: 1,
+        attributes: {},
       })
     );
 
@@ -32,7 +34,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     <div className="bg-white border lg:flex lg:flex-col justify-between gap-10 border-gray-100 rounded-lg p-3 shadow-sm hover:shadow-lg transition-shadow duration-300">
       <div>
         <img
-          src={product.thumbnail}
+          src={thumbnailUrl}
           alt={product.name}
           className="w-full h-64 object-contain rounded-md mb-2"
         />

@@ -11,7 +11,18 @@ export const fetchProducts = createAsyncThunk(
   ) => {
     try {
       const response = await axios.get(url);
-      return response.data as ProductApiResponse;
+
+      const data = response.data.data.map((product: Product) => ({
+        ...product,
+        thumbnail: product.thumbnail.startsWith("http")
+          ? product.thumbnail
+          : `${import.meta.env.VITE_BASE_URL}${product.thumbnail}`,
+      }));
+
+      return {
+        ...response.data,
+        data,
+      } as ProductApiResponse;
     } catch (error) {
       let errorMessage = "Failed to fetch products";
       if (axios.isAxiosError(error) && error.response?.data?.message) {
